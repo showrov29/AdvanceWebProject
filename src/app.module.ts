@@ -3,10 +3,10 @@ import { PatientController } from './Patient/controllers/patient.controller';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { PatientService } from './Patient/services/patient.service';
+import { AdminModule } from './Admin/admin.module';
 
 @Module({
-  imports: [PatientModule],
+  imports: [PatientModule, AdminModule],
   controllers: [AppController],
   providers: [AppService]
 })
