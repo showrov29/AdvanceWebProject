@@ -1,5 +1,5 @@
 import { PatientDTO } from './../DTOs/patient.dto';
-import { Body, Controller ,Delete,Get, Param, Post, Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
+import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseIntPipe, Post, Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
 import { PatientService } from "../services/patient.service";
 
 
@@ -8,29 +8,31 @@ import { PatientService } from "../services/patient.service";
 export class PatientController {
 
     constructor(private readonly patientService: PatientService){}
-    @Get("/dashboard")
-    getDashboard(): String{
-        return this.patientService.getDashboard();
-    }
+  
     @Get()
-    getAllPatients(): String{
+    getAllPatients(): any{
         return this.patientService.getAllPatients();
     }
     @Get("/:id")
-    getPatient(@Query() data): String{
-        return this.patientService.getPatient(data); 
+    getPatientById(@Param('id',ParseIntPipe) id:number): any{
+        return this.patientService.getPatientById(id);
+    }
+    @Get("/email")
+    getPatient(@Query('em',ParseArrayPipe) em:string): any{
+        return this.patientService.getPatientByEmail(em); 
     }
     @Delete("/delete/:id")
-    deletePatient(@Param() prm): String{
-        return this.patientService.deletePatient(prm);
+    deletePatient(@Param('id',ParseIntPipe) id:number): String{
+        return this.patientService.deletePatient(id);
     }
     @Put("/edit/:id")
-    editPatient(@Query() qar): String{
-        return this.patientService.editPatient(qar) ;
+    @UsePipes(new ValidationPipe())
+    editPatient(@Param('id',ParseIntPipe) id:number , @Body() data:PatientDTO): String{
+        return this.patientService.editPatient(id,data) ;
     }
     @Post("/register")
     @UsePipes(new ValidationPipe())
-    addUser(@Body() data:PatientDTO): String{
+    addUser(@Body() data:PatientDTO): any{
         return this.patientService.addUser(data);;
     }
 

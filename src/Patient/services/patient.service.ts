@@ -1,24 +1,37 @@
+import { PatientDTO } from './../DTOs/patient.dto';
+import { PatientEntity } from './../Entities/patient.entity';
 import { Body, Injectable, Param, Query, Request } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
 
 @Injectable()
 export class PatientService {
-  getDashboard(): string {
-    return 'Dashboard';
+  
+  constructor (
+    @InjectRepository(PatientEntity)
+    private patinetReppo: Repository<PatientEntity>
+    ){}
+
+  getAllPatients():  any {
+    return this.patinetReppo.find();
   }
-  getAllPatients(): string {
-    return "get all patients";
+  getPatientByEmail(email): any {
+    return this.patinetReppo.findOneBy({email:email.em})
   }
-  getPatient(@Query() data): string {
-    return "get patient with id " + data.id;
+  deletePatient(id): any {
+    return this.patinetReppo.delete(id);
   }
-  deletePatient(@Param() prm): string {
-    return "delete patient with id " + prm.id;
+  getPatientById( id): any {
+    return this.patinetReppo.findOneBy({id:id});
   }
-  editPatient(@Query() qar): string {
-    return "edit patient with id " + qar.id;
+  editPatient( id,data): any {
+     this.patinetReppo.update(id,data);
+     
+    return  (this.patinetReppo.update(id,data)); 
   }
-  addUser( data): any {
-    return data;
+  addUser( data:PatientDTO): any {
+    return this.patinetReppo.save(data);
   }
   
 }

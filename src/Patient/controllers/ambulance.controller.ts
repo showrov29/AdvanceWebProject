@@ -1,36 +1,42 @@
 import { AmbulanceDTO } from './../DTOs/ambulance.dto';
-import { Body, Controller ,Delete,Get, Param, Post, Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
+import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseEnumPipe, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
 import { AmbulanceService } from "../services/ambulance.service";
+import { number } from 'yup';
 
 
+enum bol {
+    true = 'true',
+    
+  }
 
 @Controller("/ambulance")
 export class AmbulanceController {
-
+    
     constructor(private readonly ambulanceService: AmbulanceService){}
     @Get("/:id")
-    getAmbulanceById(@Query() qar): String{
-        return this.ambulanceService.getByHospital(qar);
+    getAmbulanceById(@Param('id',ParseIntPipe) id:number): any{
+        return this.ambulanceService.getAmbulance(id);
+    }
+    @Get("/available")
+    getAmbulanceByStatus(@Query('status',ParseArrayPipe) status:boolean): any{
+        return this.ambulanceService.getAmbulanceByStatus(status);
     }
     @Get()
-    getAmbulances(): String{
+    getAmbulances(): any{
         return this.ambulanceService.getAllAmbulance();
     }
-    @Get("/:id")
-    getAmbulance(@Param() data): String{
-        return this.ambulanceService.getAmbulance(data); 
-    }
+  
     @Delete("/delete/:id")
-    deleteAmbulance(@Param() prm): String{
-        return this.ambulanceService.deleteAmbulance(prm);
+    deleteAmbulance(@Param('id',ParseIntPipe) id:number ): any{
+        return this.ambulanceService.deleteAmbulance(id);
     }
     @Put("/edit/:id")
-    editAmbulance(@Param() qar): String{
-        return this.ambulanceService.editAmbulance(qar) ;
+    editAmbulance(@Param('id',ParseIntPipe) id:number,@Body() data:AmbulanceDTO ): any{
+        return this.ambulanceService.editAmbulance(id,data) ;
     }
     @Post("/register")
     @UsePipes(new ValidationPipe())
-    addAmbulance(@Body() data:AmbulanceDTO): String{
+    addAmbulance(@Body() data:AmbulanceDTO): any{
         return this.ambulanceService.addAmbulance(data);;
     }
 

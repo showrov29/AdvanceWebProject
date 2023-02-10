@@ -1,25 +1,45 @@
+import { AmbulanceDTO } from './../DTOs/ambulance.dto';
+import { Repository } from 'typeorm';
 
 import { Body, Injectable, Param, Query } from '@nestjs/common';
+import { AmbulanceEntity } from '../Entities/ambulance.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AmbulanceService {
-  getByHospital(@Query() qar): string {
-    return ;
+
+  constructor(
+    @InjectRepository(AmbulanceEntity)
+    private ambulanceReppo: Repository<AmbulanceEntity>
+    ){}
+
+  
+  getAllAmbulance(): any {
+    return this.ambulanceReppo.find();
   }
-  getAllAmbulance(): string {
-    return "get all ambulance";
+  getAmbulance( id): any {
+    return this.ambulanceReppo.findOneBy({id} );
   }
-  getAmbulance(@Param() data): string {
-    return "get Ambulance with id " + data.id;
+  deleteAmbulance( id): any {
+    return this.ambulanceReppo.delete(id);
   }
-  deleteAmbulance(@Param() prm): string {
-    return "delete ambulance with id " + prm.id;
+  editAmbulance( id,data): any {
+    return this.ambulanceReppo.update(id,data);
   }
-  editAmbulance(@Param() qar): string {
-    return "edit ambulance with id " + qar.id;
+  addAmbulance(ambulance:AmbulanceDTO): any {
+    const data = new AmbulanceEntity()
+    data.driverName=ambulance.driverName;
+    data.phone=ambulance.phone;
+    data.rent=ambulance.rent;
+    data.status=ambulance.status;
+    data.hospitalId=ambulance.hospitalId;
+    data.patientId=ambulance.patientId;
+    data.location=ambulance.location;
+    return this.ambulanceReppo.save(data);
   }
-  addAmbulance(@Body() data): any {
-    return data;
-  }
+
+  getAmbulanceByStatus(na): any{
+    return this.ambulanceReppo.findOneBy({status:na.status})
+}
   
 }
