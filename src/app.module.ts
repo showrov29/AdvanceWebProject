@@ -3,6 +3,7 @@ import { PatientController } from './Patient/controllers/patient.controller';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+<<<<<<< HEAD
 import { TypeOrmModule } from '@nestjs/typeorm';
 // import { PatientService } from './Patient/services/patient.service';
 
@@ -18,6 +19,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
      synchronize: true,
    }
    ),],
+=======
+import { AdminModule } from './Admin/admin.module';
+
+@Module({
+  imports: [PatientModule, AdminModule],
+>>>>>>> origin/main
   controllers: [AppController],
   providers: [AppService]
 })
