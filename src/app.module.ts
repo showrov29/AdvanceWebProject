@@ -3,12 +3,13 @@ import { PatientController } from './Patient/controllers/patient.controller';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-<<<<<<< HEAD
+import { AdminModule } from './Admin/admin.module';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 // import { PatientService } from './Patient/services/patient.service';
 
 @Module({
-  imports: [PatientModule ,TypeOrmModule.forRoot(
+  imports: [PatientModule ,AdminModule,TypeOrmModule.forRoot(
     { type: 'postgres',
      host: 'localhost',
      port: 5432,
@@ -19,12 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
      synchronize: true,
    }
    ),],
-=======
-import { AdminModule } from './Admin/admin.module';
 
-@Module({
-  imports: [PatientModule, AdminModule],
->>>>>>> origin/main
   controllers: [AppController],
   providers: [AppService]
 })
