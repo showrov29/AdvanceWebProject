@@ -20,7 +20,7 @@ export class PatientController {
     @Put("/email")
     getPatient(@Query("email") em:ParseArrayPipe): any{
         return this.patientService.getPatientByEmail(em); 
-        // return "ok";
+       
     }
   
 
