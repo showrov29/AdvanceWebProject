@@ -1,7 +1,6 @@
 import { AmbulanceDTO } from './../DTOs/ambulance.dto';
-import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseEnumPipe, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
+import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseBoolPipe, ParseEnumPipe, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
 import { AmbulanceService } from "../services/ambulance.service";
-import { number } from 'yup';
 
 
 enum bol {
@@ -17,8 +16,8 @@ export class AmbulanceController {
     getAmbulanceById(@Param('id',ParseIntPipe) id:number): any{
         return this.ambulanceService.getAmbulance(id);
     }
-    @Get("/available")
-    getAmbulanceByStatus(@Query('status',ParseArrayPipe) status:boolean): any{
+    @Put("/available")
+    getAmbulanceByStatus(@Query('status',ParseBoolPipe)status?:boolean): any{
         return this.ambulanceService.getAmbulanceByStatus(status);
     }
     @Get()

@@ -17,7 +17,7 @@ export class PatientService {
     return this.patinetReppo.find();
   }
   getPatientByEmail(email): any {
-    return this.patinetReppo.findOneBy({email:email.em})
+    return this.patinetReppo.findBy({email:email})
   }
   deletePatient(id): any {
     return this.patinetReppo.delete(id);

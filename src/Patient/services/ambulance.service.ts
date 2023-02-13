@@ -39,7 +39,8 @@ export class AmbulanceService {
   }
 
   getAmbulanceByStatus(na): any{
-    return this.ambulanceReppo.findOneBy({status:na.status})
+    
+    return this.ambulanceReppo.findBy({status:na})
 }
   
 }

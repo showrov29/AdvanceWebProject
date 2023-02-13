@@ -17,10 +17,13 @@ export class PatientController {
     getPatientById(@Param('id',ParseIntPipe) id:number): any{
         return this.patientService.getPatientById(id);
     }
-    @Get("/email")
-    getPatient(@Query('em',ParseArrayPipe) em:string): any{
+    @Put("/email")
+    getPatient(@Query("email") em:ParseArrayPipe): any{
         return this.patientService.getPatientByEmail(em); 
+        // return "ok";
     }
+  
+
     @Delete("/delete/:id")
     deletePatient(@Param('id',ParseIntPipe) id:number): String{
         return this.patientService.deletePatient(id);
@@ -33,6 +36,7 @@ export class PatientController {
     @Post("/register")
     @UsePipes(new ValidationPipe())
     addUser(@Body() data:PatientDTO): any{
+        
         return this.patientService.addUser(data);;
     }
 

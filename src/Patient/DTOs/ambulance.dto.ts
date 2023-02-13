@@ -5,10 +5,10 @@ export class AmbulanceDTO{
     
     @IsNotEmpty()
     @Length(4,20)
-    @IsString()
+    @IsString({message:"Invalid Name"})
     driverName:string
 
-    @IsNotEmpty()
+    @IsNotEmpty({message:"hospital id can nt be empty"})
     @IsInt()
     hospitalId:number
 
