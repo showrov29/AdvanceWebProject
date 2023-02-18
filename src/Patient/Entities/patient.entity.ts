@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { PrescriptionEntity } from "./prescription.entity";
 
 @Entity('Patient')
 export class PatientEntity {
@@ -22,8 +23,14 @@ export class PatientEntity {
     @Column()
     email:string
 
-    @Column({default:"New"})
-    status:string
+    @Column({length:15})
+    password:string
+
+    @Column({default:false})
+    status:boolean
+
+    @OneToMany(()=>PrescriptionEntity,(prescription)=>prescription.patient)
+    prescriptions:PrescriptionEntity[]
 
 
 

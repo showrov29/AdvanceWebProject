@@ -3,10 +3,7 @@ import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseBoolPipe, Par
 import { AmbulanceService } from "../services/ambulance.service";
 
 
-enum bol {
-    true = 'true',
-    
-  }
+
 
 @Controller("/ambulance")
 export class AmbulanceController {

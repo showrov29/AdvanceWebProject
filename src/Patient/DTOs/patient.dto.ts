@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Length, Matches } from "class-validator";
 
 
 export class PatientDTO{
@@ -17,8 +17,13 @@ export class PatientDTO{
     @IsNotEmpty()
     dob: string;
 
+    @IsOptional()
+    @IsBoolean()
+    status: boolean;
+
     @IsNotEmpty()
-    @Length(11,11)
+    @Length(11,14)
+    // @Matches('','',{message:"Invalid Phone number"})
     phone: string;
 
 
@@ -27,4 +32,9 @@ export class PatientDTO{
     @IsEmail()
     @IsNotEmpty()
     email:string;
+
+    @IsNotEmpty()
+    @IsNotEmpty()
+    @Matches('((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$','',{message:'Password must contain at least one character and one space character'})
+    password:string;
 }

@@ -1,4 +1,4 @@
-import { IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, length, Length } from "class-validator";
+import { IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, length, Length, Matches } from "class-validator";
 
 export class AmbulanceDTO{
 
@@ -20,6 +20,7 @@ export class AmbulanceDTO{
     @IsNotEmpty()
     @IsString()
     @Length(11,11)
+    @Matches('(^([+]{1}[8]{2}|0088)?(01){1}[3-9]{1}\d{8})$')
     phone:string
 
 
@@ -35,6 +36,7 @@ export class AmbulanceDTO{
 
     @IsNotEmpty()
     @IsString()
+    @Matches('^[#.0-9a-zA-Z\s,-]+$')
     location:string
 
 
