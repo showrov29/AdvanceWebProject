@@ -1,6 +1,8 @@
 import { PatientDTO } from './../DTOs/patient.dto';
-import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseIntPipe, Post, Put, Query, Request, UsePipes, ValidationPipe} from "@nestjs/common";
+import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseFilePipe, ParseIntPipe, Post, Put, Query, Request, UploadedFile, UseInterceptors, UsePipes, ValidationPipe} from "@nestjs/common";
 import { PatientService } from "../services/patient.service";
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import multer from 'multer';
 
 
 
@@ -17,10 +19,11 @@ export class PatientController {
     getPatientById(@Param('id',ParseIntPipe) id:number): any{
         return this.patientService.getPatientById(id);
     }
-    @Put("/email")
-    getPatient(@Query("email") em:ParseArrayPipe): any{
-        return this.patientService.getPatientByEmail(em); 
-       
+    @Get("/signup/user")
+    login(@Body() em:PatientDTO): any{
+        
+            return this.patientService.login(em); 
+     
     }
   
 
@@ -35,9 +38,17 @@ export class PatientController {
     }
     @Post("/register")
     @UsePipes(new ValidationPipe())
-    addUser(@Body() data:PatientDTO): any{
+     addUser(@Body() data:PatientDTO): any{
         
         return this.patientService.addUser(data);;
+    }
+    @Post("/profile/upload:id")
+    @UseInterceptors(FileInterceptor('profilePic'))
+    uploadProfile(@UploadedFile() file:Express.Multer.File ,@Param() id:any): any{
+        
+        console.log(file.originalname+id.id);
+        
+        
     }
 
 

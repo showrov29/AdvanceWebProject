@@ -18,7 +18,7 @@ export class PrescriptionDTO{
     patientName:string
 
     @IsNotEmpty()
-    patientid:number
+    patient:any
 
 
 

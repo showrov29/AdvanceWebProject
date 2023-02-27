@@ -3,6 +3,8 @@ import { PatientEntity } from './../Entities/patient.entity';
 import { Body, Injectable, Param, Query, Request } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
+
 
 
 @Injectable()
@@ -16,8 +18,25 @@ export class PatientService {
   getAllPatients():  any {
     return this.patinetReppo.find();
   }
-  getPatientByEmail(email): any {
-    return this.patinetReppo.findBy({email:email})
+  async login(data): Promise<any> {
+    
+    const salt = await bcrypt.genSalt();
+    // const hashedPassword = await bcrypt.hash(data.password, 10);
+    const user= await this.patinetReppo.findOneBy({email:data.email});
+    if (user != null){
+      const isMatch = await bcrypt.compare(data.password, user.password);
+      if(isMatch ) {
+        return user
+      }
+      else{
+        return {passErr:"Iincorrect Password"}
+      }
+    }
+
+    else{
+      return {emailErr:"Iincorrect Email"} ;
+    }
+   
   }
   deletePatient(id): any {
     return this.patinetReppo.delete(id);
@@ -30,8 +49,20 @@ export class PatientService {
      
     return  (this.patinetReppo.update(id,data)); 
   }
-  addUser( data:PatientDTO): any {
+  uploadProfilePic( id,data): any {
+     this.patinetReppo.update(id,data);
+     
+    return  (this.patinetReppo.update(id,{profilePic:data})); 
+  }
+  
+   async addUser( data): Promise<any> {
+    const salt = await bcrypt.genSalt()
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    data.password = hashedPassword
     return this.patinetReppo.save(data);
   }
   
 }
+
+
+

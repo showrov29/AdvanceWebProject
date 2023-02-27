@@ -4,12 +4,12 @@ import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Length,
 export class PatientDTO{
 
     
-    @Length(4,10)
+    @Length(4,20)
     @IsNotEmpty()
     @IsString({message:"Invalid Name"})
     firstName:string;
 
-    @Length(4,10)
+    @Length(4,20)
     @IsNotEmpty()
     @IsString({message:"Invalid Name"})
     lastName:string;

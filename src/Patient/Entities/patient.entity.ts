@@ -20,14 +20,17 @@ export class PatientEntity {
     phone:string
 
     
-    @Column()
+    @Column({unique:true})
     email:string
 
-    @Column({length:15})
+    @Column()
     password:string
 
     @Column({default:false})
     status:boolean
+
+    @Column({unique:true,default:null})
+    profilePic:string
 
     @OneToMany(()=>PrescriptionEntity,(prescription)=>prescription.patient)
     prescriptions:PrescriptionEntity[]

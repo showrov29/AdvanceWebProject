@@ -14,12 +14,14 @@ export class PrescriptionsService {
       getAllPrescription(): any {
         return this.prescriptionReppo.find();
       }
-    //   getPrescription( id): any {
-    //     return this.prescriptionReppo.findBy({pId:id} );
-    //   }
+      getPrescriptionByPatientId( pid): any {
+        return this.prescriptionReppo.findBy({patient:pid} );
+      }
+    
       deletePrescription( id): any {
         return this.prescriptionReppo.delete(id);
       }
+
       editPrescription( id,data): any {
         return this.prescriptionReppo.update(id,data);
       }
