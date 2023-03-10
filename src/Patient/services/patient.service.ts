@@ -18,7 +18,7 @@ export class PatientService {
   getAllPatients():  any {
     return this.patinetReppo.find();
   }
-  async login(data): Promise<any> {
+  async login(data){
     
     const salt = await bcrypt.genSalt();
     // const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -26,7 +26,7 @@ export class PatientService {
     if (user != null){
       const isMatch = await bcrypt.compare(data.password, user.password);
       if(isMatch ) {
-        return user
+        return {user:user}
       }
       else{
         return {passErr:"Iincorrect Password"}
@@ -52,7 +52,7 @@ export class PatientService {
   uploadProfilePic( id,data): any {
      this.patinetReppo.update(id,data);
      
-    return  (this.patinetReppo.update(id,{profilePic:data})); 
+    return  (this.patinetReppo.update(id,{profilePic:data.profilePic})); 
   }
   
    async addUser( data): Promise<any> {

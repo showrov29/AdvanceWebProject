@@ -1,8 +1,11 @@
+import { IsDate } from 'class-validator';
 import { PatientDTO } from './../DTOs/patient.dto';
-import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseFilePipe, ParseIntPipe, Post, Put, Query, Request, UploadedFile, UseInterceptors, UsePipes, ValidationPipe} from "@nestjs/common";
+import { Body, Controller ,Delete,FileTypeValidator,Get, MaxFileSizeValidator, Param, ParseFilePipe, ParseIntPipe, Post, Put, Session, UnauthorizedException, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe} from "@nestjs/common";
 import { PatientService } from "../services/patient.service";
 import { FileInterceptor } from '@nestjs/platform-express/multer';
-import multer from 'multer';
+import multer, { diskStorage } from 'multer';
+import { SessionGuard } from '../session.guard';
+
 
 
 
@@ -15,14 +18,24 @@ export class PatientController {
     getAllPatients(): any{
         return this.patientService.getAllPatients();
     }
-    @Get("/:id")
-    getPatientById(@Param('id',ParseIntPipe) id:number): any{
-        return this.patientService.getPatientById(id);
+    @Get("/profile")
+    @UseGuards(SessionGuard)
+    getPatientById(@Session() mysession): any{
+        return this.patientService.getPatientById(mysession.userId);
     }
-    @Get("/signup/user")
-    login(@Body() em:PatientDTO): any{
+    @Get("/login/user")
+     async login(@Session() mysession , @Body() data:PatientDTO){
         
-            return this.patientService.login(em); 
+      
+           const user = await  this.patientService.login(data);
+           
+           mysession.userId=user.user.id;
+           mysession.userEmail=user.user.email;
+          console.log(mysession.userEmail);
+          
+          return user
+           
+           
      
     }
   
@@ -31,24 +44,57 @@ export class PatientController {
     deletePatient(@Param('id',ParseIntPipe) id:number): String{
         return this.patientService.deletePatient(id);
     }
-    @Put("/edit/:id")
+    @Put("/edit")
+    @UseGuards(SessionGuard)
     @UsePipes(new ValidationPipe())
-    editPatient(@Param('id',ParseIntPipe) id:number , @Body() data:PatientDTO): String{
-        return this.patientService.editPatient(id,data) ;
+    editPatient(@Session() mysession , @Body() data:PatientDTO): String{
+        return this.patientService.editPatient(mysession.userId,data) ;
     }
     @Post("/register")
     @UsePipes(new ValidationPipe())
      addUser(@Body() data:PatientDTO): any{
         
-        return this.patientService.addUser(data);;
+        return this.patientService.addUser(data);
     }
-    @Post("/profile/upload:id")
-    @UseInterceptors(FileInterceptor('profilePic'))
-    uploadProfile(@UploadedFile() file:Express.Multer.File ,@Param() id:any): any{
+
+
+    @Put("/profile/upload")
+    @UseGuards(SessionGuard)
+    @UseInterceptors(FileInterceptor('profilePic',{
+        storage:diskStorage({
+            destination:'./uploads/paitent/profile',
+            filename: function(req,file,cb){
+                cb(null,Date.now()+file.originalname);
+            }
+        })
+    }))
+    uploadProfile(@UploadedFile(new ParseFilePipe({
+        validators: [
+            new MaxFileSizeValidator({ maxSize: 1600000 }),
+            new FileTypeValidator({ fileType: 'png|jpg|jpeg|' }),
+          ],
+    }),) file:Express.Multer.File ,@Session() mysession, @Body() data:PatientDTO ): any{
         
-        console.log(file.originalname+id.id);
+        console.log(file.originalname+mysession.userId);
+        data.profilePic=file.filename;
+
+        return this.patientService.uploadProfilePic(mysession.userId,data)
         
-        
+    }
+
+
+    @Get('/logout')
+    @UseGuards(SessionGuard)
+    signout(@Session() mysession)
+    {
+    if(mysession.destroy())
+    {
+        return {message:"Logged out"};
+    }
+    else
+    {
+        throw new UnauthorizedException("Something went wrong");
+    }
     }
 
 

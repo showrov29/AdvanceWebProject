@@ -2,6 +2,8 @@ import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Length,
 
 
 export class PatientDTO{
+    
+    
 
     
     @Length(4,20)
@@ -27,7 +29,7 @@ export class PatientDTO{
     phone: string;
 
 
-
+    profilePic:string
 
     @IsEmail()
     @IsNotEmpty()
