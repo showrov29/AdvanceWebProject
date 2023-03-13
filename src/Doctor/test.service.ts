@@ -23,8 +23,10 @@ export class TestService {
     const data = new TestEntity()
     data.test_name=test.test_name;
     data.date=test.date;
-    data.report_date=test.report_date;
+    data.delivery_date=test.delivery_date;
     data.fees=test.fees;
+    data.refference_by=test.refference_by;
+    data.patient_no=test.patient_no;
     return this.testReppo.save(data);
   }
   

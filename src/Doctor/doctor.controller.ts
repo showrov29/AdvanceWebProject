@@ -1,10 +1,10 @@
 import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UsePipes, ValidationPipe,Session, 
-  UploadedFile, UseInterceptors, FileTypeValidator,MaxFileSizeValidator, ParseFilePipe} from '@nestjs/common';
+  UploadedFile, UseInterceptors, FileTypeValidator,MaxFileSizeValidator, ParseFilePipe, UnauthorizedException, UseGuards} from '@nestjs/common';
 import { DoctorForm } from './doctor.dto';
 import { DoctorService } from './doctor.service';
-//import { FileInterceptor } from '@nestjs/platform-express';
-//import { diskStorage } from 'multer';
-//import { UnauthorizedException } from '@nestjs/common/exceptions';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import multer, { diskStorage } from 'multer';
+import { SessionGuard } from './session.guard';
 
 
 
@@ -36,9 +36,28 @@ export class DoctorController {
           return this.doctorService.editDoctor(qar) ;
       }
 
+
+      @Get("/login/doc")
+      async login(@Session() mysession , @Body() data:DoctorForm){
+         
+       
+            const doc = await  this.doctorService.login(data);
+            
+            mysession.docId=doc.doc.id;
+            mysession.docEmail=doc.doc.email;
+           console.log(mysession.docEmail);
+           
+           return doc
+            
+            
+      
+     }
+
+
+
     @Post('/register')
       @UsePipes(new ValidationPipe())
-      register(@Body() mydto: DoctorForm): any {
+      registerid(@Body() mydto: DoctorForm): any {
           return this.doctorService.register(mydto);
         }
 
@@ -101,63 +120,94 @@ export class DoctorController {
 
 
 
- /* @Post('/signup')
-@UseInterceptors(FileInterceptor('myfile',
-{storage:diskStorage({
-  destination: './uploads',
-  filename: function (req, file, cb) {
-    cb(null,Date.now()+file.originalname)
+  @Put("/profile/upload")
+  @UseGuards(SessionGuard)
+  @UseInterceptors(FileInterceptor('profilePic',{
+      storage:diskStorage({
+          destination:'./uploads/doctor/profile',
+          filename: function(req,file,cb){
+              cb(null,Date.now()+file.originalname);
+          }
+      })
+  }))
+  uploadProfile(@UploadedFile(new ParseFilePipe({
+      validators: [
+          new MaxFileSizeValidator({ maxSize: 160000000000 }),
+          new FileTypeValidator({ fileType: 'png|jpg|jpeg|' }),
+        ],
+  }),) file:Express.Multer.File ,@Session() mysession, @Body() data:DoctorForm ): any{
+      
+      console.log(file.originalname+mysession.docId);
+      data.profilePic=file.filename;
+
+      return this.doctorService.uploadProfilePic(mysession.docId,data)
+      
   }
-})
 
-}))
-signup(@Body() mydto:DoctorForm,@UploadedFile(  new ParseFilePipe({
-  validators: [
-    new MaxFileSizeValidator({ maxSize: 16000 }),
-    new FileTypeValidator({ fileType: 'png|jpg|jpeg|' }),
-  ],
-}),) file: Express.Multer.File){
-
-mydto.filename = file.filename;  
-
-return this.doctorService.signup(mydto);
-console.log(file)
-}
-@Get('/signin')
-signin(@Session() session, @Body() mydto:DoctorForm)
-{
-if(this.doctorService.signin(mydto))
-{
-  session.email = mydto.email;
-
-  console.log(session.email);
-  return {message:"success"};
-
-}
-else
-{
-  return {message:"invalid credentials"};
-}
- 
-}
-@Get('/signout')
-signout(@Session() session)
-{
-  if(session.destroy())
+  @Get('/logout')
+  @UseGuards(SessionGuard)
+  signout(@Session() mysession)
   {
-    return {message:"you are logged out"};
+  if(mysession.destroy())
+  {
+      return {message:"Logged Out"};
   }
   else
   {
-    throw new UnauthorizedException("invalid actions");
+      throw new UnauthorizedException("Something Wrong");
   }
-}
-@Post('/sendemail')
-sendEmail(@Body() mydata){
-return this.doctorService.sendEmail(mydata);
-}*/
+  }
 
 
+
+  @Put("/nid/upload")
+  @UseGuards(SessionGuard)
+  @UseInterceptors(FileInterceptor('nidPdf',{
+      storage:diskStorage({
+          destination:'./uploads/doctor/nid',
+          filename: function(req,file,cb){
+              cb(null,Date.now()+file.originalname);
+          }
+      })
+  }))
+  uploadNidPdf(@UploadedFile(new ParseFilePipe({
+      validators: [
+          new MaxFileSizeValidator({ maxSize: 1600000 }),
+          new FileTypeValidator({ fileType: 'pdf' }),
+        ],
+  }),) file:Express.Multer.File ,@Session() mysession, @Body() data:DoctorForm ): any{
+      
+      console.log(file.originalname+mysession.docId);
+      data.nidPdf=file.filename;
+
+      return this.doctorService.uploadNidPdf(mysession.docId,data)
+      
+  }
+
+
+  @Put("/certificate/upload")
+  @UseGuards(SessionGuard)
+  @UseInterceptors(FileInterceptor('nidPdf',{
+      storage:diskStorage({
+          destination:'./uploads/doctor/nid',
+          filename: function(req,file,cb){
+              cb(null,Date.now()+file.originalname);
+          }
+      })
+  }))
+  uploadCertificatePdf(@UploadedFile(new ParseFilePipe({
+      validators: [
+          new MaxFileSizeValidator({ maxSize: 1600000 }),
+          new FileTypeValidator({ fileType: 'pdf' }),
+        ],
+  }),) file:Express.Multer.File ,@Session() mysession, @Body() data:DoctorForm ): any{
+      
+      console.log(file.originalname+mysession.docId);
+      data.certificatePdf=file.filename;
+
+      return this.doctorService.uploadCertificatePdf(mysession.docId,data)
+      
+  }
 
 
 }

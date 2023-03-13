@@ -26,19 +26,24 @@ export class DoctorEntity{
   specialist: string;
 
   @Column()
-  passed_form: string;
-
-  @Column()
   address: string;
 
-  @Column()
+  @Column({default:null})
   designation: string;
 
-  @Column()
-  salary: number;
+  @Column({unique:true,default:null})
+  profilePic:string
 
-  @Column()
-  filename: string;
+  @Column({unique:true,default:null})
+  nidPdf:string
+
+  @Column({unique:true,default:null})
+  certificatePdf:string
+
+  @Column({default:null})
+  bmdc_reg_no: string;
+
+
 
   @OneToMany(() => MedicineEntity, (medicine) => medicine.doctor)
   medicines: MedicineEntity[]

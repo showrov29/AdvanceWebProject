@@ -14,10 +14,16 @@ export class TestDTO {
     date: string;
 
     @IsNotEmpty({ message: 'report date is required' })
-    report_date: string;
+    delivery_date: string;
 
     @IsInt({ message: 'price must be ineger value' })
     fees: number;
+
+    @IsNotEmpty({ message: 'refference_by is required' })
+    refference_by: string;
+
+    @IsInt({ message: 'patient_no must be ineger value' })
+    patient_no: number;
 
 
 
