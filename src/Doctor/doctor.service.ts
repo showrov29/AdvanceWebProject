@@ -41,6 +41,7 @@ export class DoctorService {
       doctoraccount.contact = mydto.contact;
       doctoraccount.specialist = mydto.specialist;
       doctoraccount.designation = mydto.designation;
+      doctoraccount.bmdc_reg_no = mydto.bmdc_reg_no;
       doctoraccount.address = mydto.address;
       doctoraccount.profilePic = mydto.profilePic;
 
@@ -92,8 +93,10 @@ async login(data){
    // const hashedPassword = await bcrypt.hash(data.password, 10);
    const doc= await this.doctorRepo.findOneBy({email:data.email});
    if (doc != null){
-     const isMatch = await bcrypt.compare(data.password, doc.password);
-     if(isMatch ) {
+    //  const isMatch = await bcrypt.compare(data.password, doc.password);
+
+
+     if(data.password == doc.password) {
        return {doc:doc}
      }
      else{

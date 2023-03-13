@@ -40,7 +40,7 @@ export class DoctorEntity{
   @Column({unique:true,default:null})
   certificatePdf:string
 
-  @Column({default:null})
+  @Column()
   bmdc_reg_no: string;
 
 

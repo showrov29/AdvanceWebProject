@@ -3,9 +3,7 @@ import { IsNotEmpty, IsEmail, IsInt, Matches, MinLength, MaxLength } from "class
 export class DoctorForm {   
    
     
-    @IsNotEmpty({ message: 'id is required' })
-    @IsInt({ message: 'id must be ineger value' })
-    id: number;
+   
     
     @MinLength(3, { message: 'name must be at least 3 characters long' })
     @MaxLength(30, { message: 'name cannot be longer than 30 characters' })
@@ -31,7 +29,7 @@ export class DoctorForm {
     @IsNotEmpty({ message: 'specialist is required' })
     specialist: string;
 
-    @IsNotEmpty({ message: 'id is required' })
+    @IsNotEmpty()
     address: string;
 
     designation: string;
