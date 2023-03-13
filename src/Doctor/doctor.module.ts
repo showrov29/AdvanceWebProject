@@ -12,13 +12,26 @@ import { OperationEntity } from "./operation.entity"
 import { TestService } from "./test.service"
 import { TestController } from "./test.controller"
 import { TestEntity } from "./test.entity"
-
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
 
-  imports: [TypeOrmModule.forFeature([DoctorEntity, MedicineEntity, TestEntity, OperationEntity])],
-  controllers: [DoctorController, MedicineController, TestController, OperationController],
-  providers: [DoctorService, MedicineService, TestService, OperationService],
-
+    imports: [
+        MailerModule.forRoot({
+            transport: {
+              host: 'smtp.gmail.com',
+                       port: 465,
+                       ignoreTLS: true,
+                       secure: true,
+                       auth: {
+                           user: 'mdsakib2020year@gmail.com',
+                           pass: 'ntbmnlpxteusifps'
+                       },
+                      }
+          }),
+        
+        TypeOrmModule.forFeature([DoctorEntity, MedicineEntity, TestEntity, OperationEntity])],
+    providers: [DoctorService, MedicineService, TestService, OperationService],
+    controllers: [DoctorController, MedicineController, TestController, OperationController],
 })
 export class DoctorModule {}

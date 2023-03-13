@@ -4,7 +4,7 @@ import {DoctorEntity} from "./doctor.entity";
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-//import { MailerService } from "@nestjs-modules/mailer/dist";
+import { MailerService } from "@nestjs-modules/mailer/dist";
 
 
 @Injectable()
@@ -13,7 +13,7 @@ export class DoctorService {
    constructor(
       @InjectRepository(DoctorEntity)
       private doctorRepo: Repository<DoctorEntity>,
-      //private mailerService: MailerService
+      private mailerService: MailerService
     ) {}
 
   getHello(): any {
@@ -38,6 +38,13 @@ export class DoctorService {
       doctoraccount.email = mydto.email;
       doctoraccount.password = mydto.password;
       doctoraccount.age = mydto.age;
+      doctoraccount.contact = mydto.contact;
+      doctoraccount.specialist = mydto.specialist;
+      doctoraccount.designation = mydto.designation;
+      doctoraccount.address = mydto.address;
+      doctoraccount.profilePic = mydto.profilePic;
+
+
      return this.doctorRepo.save(doctoraccount);
      
         }
@@ -71,38 +78,83 @@ updatedoc(id,name,email,password,age):any {
 
 
 
+ uploadProfilePic( id,data): any {
+   this.doctorRepo.update(id,data);
+   
+  return  (this.doctorRepo.update(id,{profilePic:data.profilePic})); 
+}
 
- /*async signup(mydto) {
+
+
+async login(data){
+    
    const salt = await bcrypt.genSalt();
-   const hassedpassed = await bcrypt.hash(mydto.password, salt);
-   mydto.password= hassedpassed;
-   return this.doctorRepo.save(mydto);
+   // const hashedPassword = await bcrypt.hash(data.password, 10);
+   const doc= await this.doctorRepo.findOneBy({email:data.email});
+   if (doc != null){
+     const isMatch = await bcrypt.compare(data.password, doc.password);
+     if(isMatch ) {
+       return {doc:doc}
+     }
+     else{
+       return {passErr:"invalid password"}
+     }
    }
+
+   else{
+     return {emailErr:"invalid email"} ;
+   }
+  
+ }
+
+
+
+ async registerid( data): Promise<any> {
+  const salt = await bcrypt.genSalt()
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  data.password = hashedPassword
+  return this.doctorRepo.save(data);
+}
+
+
+uploadNidPdf( id,data): any {
+   this.doctorRepo.update(id,data);
    
-   async signin(mydto){
-       console.log(mydto.password);
-   const mydata= await this.doctorRepo.findOneBy({email: mydto.email});
-   const isMatch= await bcrypt.compare(mydto.password, mydata.password);
-   if(isMatch) {
-   return 1;
-   }
-   else {
-       return 0;
-   }
+  return  (this.doctorRepo.update(id,{nidPdf:data.nidPdf})); 
+}
+
+ async addNid( data): Promise<any> {
+  const salt = await bcrypt.genSalt()
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  data.password = hashedPassword
+  return this.doctorRepo.save(data);
+}
+
+uploadCertificatePdf( id,data): any {
+   this.doctorRepo.update(id,data);
    
-   }
-   
-   async sendEmail(mydata){
-    return   await this.mailerService.sendMail({
-           to: mydata.email,
-           subject: mydata.subject,
-           text: mydata.text, 
+  return  (this.doctorRepo.update(id,{certificatePdf:data.certificatePdf})); 
+}
+
+ async addCertificate( data): Promise<any> {
+  const salt = await bcrypt.genSalt()
+  const hashedPassword = await bcrypt.hash(data.password, 10);
+  data.password = hashedPassword
+  return this.doctorRepo.save(data);
+}
+
+
+
+
+
+async sendEmail(emailData){
+   return  await this.mailerService.sendMail({
+          to: emailData.email,
+          subject:'Absence mail',
+          text:"sorry today i am busy"
+          //text: 'Dear '+emailData.userName+ 'Your Appointment Scheduled at ' + emailData.time +"Patient Name "+emailData.paitentName+ "/n Docator Name: " + emailData.doctorName+'Hospital Name: ' + emailData.hospitalName, 
          });
-   
-   }*/
-
-
-
+       }
 
 
 

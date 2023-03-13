@@ -12,9 +12,15 @@ export class TestEntity{
   date: string;
 
   @Column()
-  report_date: string;
+  delivery_date: string;
 
   @Column()
   fees: number;
+
+  @Column()
+  refference_by: string;
+
+  @Column()
+  patient_no: number;
 
 }
