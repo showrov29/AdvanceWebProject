@@ -54,7 +54,8 @@ export class AmbulanceController {
             const id=mysession.userId;
             console.log(id);
             
-            return this.ambulanceService.getAmbulanceByProfile(id);
+            const x= this.ambulanceService.getAmbulanceByProfile(id);
+            return x;
         }
         catch(err){
             throw new HttpException({
