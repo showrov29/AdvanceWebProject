@@ -1,3 +1,4 @@
+import { AmbulanceEntity } from './ambulance.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { PrescriptionEntity } from "./prescription.entity";
 
@@ -34,6 +35,9 @@ export class PatientEntity {
 
     @OneToMany(()=>PrescriptionEntity,(prescription)=>prescription.patient)
     prescriptions:PrescriptionEntity[]
+
+    @OneToMany(() => AmbulanceEntity, (ambulance) => ambulance.patientA)
+    ambulance: AmbulanceEntity[]
 
 
 

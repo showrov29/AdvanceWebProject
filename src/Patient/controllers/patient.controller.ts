@@ -1,6 +1,6 @@
 import { IsDate } from 'class-validator';
 import { PatientDTO } from './../DTOs/patient.dto';
-import { Body, Controller ,Delete,FileTypeValidator,Get, MaxFileSizeValidator, Param, ParseFilePipe, ParseIntPipe, Post, Put, Session, UnauthorizedException, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe} from "@nestjs/common";
+import { Body, Controller ,Delete,FileTypeValidator,Get, HttpException, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, ParseIntPipe, Post, Put, Session, UnauthorizedException, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe} from "@nestjs/common";
 import { PatientService } from "../services/patient.service";
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import multer, { diskStorage } from 'multer';
@@ -27,13 +27,26 @@ export class PatientController {
      async login(@Session() mysession , @Body() data:PatientDTO){
         
       
-           const user = await  this.patientService.login(data);
+        try{
+            const user = await  this.patientService.login(data);
            
-           mysession.userId=user.user.id;
-           mysession.userEmail=user.user.email;
-          console.log(mysession.userEmail);
+            mysession.userId=user.user.id;
+            mysession.userEmail=user.user.email;
+           console.log(mysession.userEmail);
+           return user;
+           
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'Login failed',
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
+        
+         
           
-          return user
            
            
      

@@ -38,8 +38,9 @@ import { MailerService } from "@nestjs-modules/mailer/dist";
         
         const emailData={
             email: userData.userEmail,
-            // time:appointment.date,
-            patientName:appointment.name,
+            userName: userData.userName,
+            time:appointment.date,
+            name:appointment.name,
         }
         this.sendEmail(emailData);
 
@@ -51,8 +52,9 @@ import { MailerService } from "@nestjs-modules/mailer/dist";
         return  await this.mailerService.sendMail({
                to: emailData.email,
                subject:'Appointment Scheduled',
-               text:"abcd"
-            //    text: 'Dear '+emailData.userName+ 'Your Appointment Scheduled at ' + emailData.time +"Patient Name "+emailData.paitentName+ "/n Docator Name: " + emailData.doctorName+'Hospital Name: ' + emailData.hospitalName, 
+              //  text:"abcd"
+              template:'/email'
+              // text: 'Dear '+emailData.userName+ ' Your Appointment Scheduled at ' + emailData.time +" Patient Name : "+emailData.name+ " Docator Name: " + emailData.doctorName+'Hospital Name: ' + emailData.hospitalName, 
               });
             }
        

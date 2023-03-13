@@ -20,6 +20,17 @@ export class AmbulanceService {
   getAmbulance( id): any {
     return this.ambulanceReppo.findOneBy({id} );
   }
+  getAmbulanceByProfile( id): any {
+    return this.ambulanceReppo.find(
+     {
+      where: {patientId:id},
+      relations:{
+        patientA:true
+      }
+     }
+      )
+    
+  }
   deleteAmbulance( id): any {
     return this.ambulanceReppo.delete(id);
   }
@@ -32,8 +43,9 @@ export class AmbulanceService {
     data.phone=ambulance.phone;
     data.rent=ambulance.rent;
     data.status=ambulance.status;
-    data.hospitalId=ambulance.hospitalId;
-    data.patientId=ambulance.patientId;
+    // data.hospitalId=ambulance.hospitalId;
+    data.patientA=ambulance.patientA;
+    data.patientId=ambulance.patientA;
     data.location=ambulance.location;
     return this.ambulanceReppo.save(data);
   }

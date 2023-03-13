@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { PatientEntity } from './patient.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('Ambulance')
 export class AmbulanceEntity {
@@ -9,8 +10,8 @@ export class AmbulanceEntity {
     @Column()
     driverName:string
     
-    @Column()
-    hospitalId:number
+    // @Column()
+    // hospitalId:number
 
     @Column()
     rent:number
@@ -28,6 +29,8 @@ export class AmbulanceEntity {
     @Column()
     location:string
 
+    @ManyToOne(() => PatientEntity, (patient) => patient.ambulance)
+    patientA: PatientEntity
 
 
 

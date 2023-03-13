@@ -12,10 +12,21 @@ export class PrescriptionsService {
     
       
       getAllPrescription(): any {
-        return this.prescriptionReppo.find();
+        return this.prescriptionReppo.find({
+          relations:{
+            patient:true
+          }
+        });
       }
       getPrescriptionByPatientId( pid): any {
-        return this.prescriptionReppo.findBy({patient:pid} );
+        return this.prescriptionReppo.find(
+          {
+            where:{patient:pid} ,
+            relations:{
+                patient:true
+            }
+          }
+        );
       }
     
       deletePrescription( id): any {

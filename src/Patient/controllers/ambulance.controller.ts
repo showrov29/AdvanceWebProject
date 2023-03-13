@@ -1,5 +1,5 @@
 import { AmbulanceDTO } from './../DTOs/ambulance.dto';
-import { Body, Controller ,Delete,Get, Param, ParseArrayPipe, ParseBoolPipe, ParseEnumPipe, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Request, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
+import { Body, Controller ,Delete,Get, HttpException, HttpStatus, Param, ParseArrayPipe, ParseBoolPipe, ParseEnumPipe, ParseIntPipe, ParseUUIDPipe, Post, Put, Query, Request, Session, UseGuards, UsePipes, ValidationPipe} from "@nestjs/common";
 import { AmbulanceService } from "../services/ambulance.service";
 import { SessionGuard } from '../session.guard';
 
@@ -13,33 +13,126 @@ export class AmbulanceController {
     @Get("/:id")
     @UseGuards(SessionGuard)
     getAmbulanceById(@Param('id',ParseIntPipe) id:number): any{
-        return this.ambulanceService.getAmbulance(id);
+
+        try{
+            return this.ambulanceService.getAmbulance(id);
+
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: err,
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
+
+       
     }
     @Put("/available")
     @UseGuards(SessionGuard)
     getAmbulanceByStatus(@Query('status',ParseBoolPipe)status?:boolean): any{
-        return this.ambulanceService.getAmbulanceByStatus(status);
+        try{
+            
+            return this.ambulanceService.getAmbulanceByStatus(status);
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'something went wrong',
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
     }
+    @Put("/booked/profile")
+    @UseGuards(SessionGuard)
+    getAmbulanceByProfile(@Session()mysession): any{
+        try{
+            
+            // console.log(mysession.userId);
+            const id=mysession.userId;
+            console.log(id);
+            
+            return this.ambulanceService.getAmbulanceByProfile(id);
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'something went wrong',
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
+    }
+
     @Get()
+    @UseGuards(SessionGuard)
+
     getAmbulances(): any{
-        return this.ambulanceService.getAllAmbulance();
+        try{
+            return this.ambulanceService.getAllAmbulance();
+           
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'something went wrong',
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
     }
   
     @Delete("/delete/:id")
     @UseGuards(SessionGuard)
     deleteAmbulance(@Param('id',ParseIntPipe) id:number ): any{
-        return this.ambulanceService.deleteAmbulance(id);
+        try{
+            return this.ambulanceService.deleteAmbulance(id);
+            
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'something went wrong',
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
+
     }
     @Put("/edit/:id")
     @UseGuards(SessionGuard)
     editAmbulance(@Param('id',ParseIntPipe) id:number,@Body() data:AmbulanceDTO ): any{
-        return this.ambulanceService.editAmbulance(id,data) ;
+        
+        try{
+            return this.ambulanceService.editAmbulance(id,data) ;
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'something went wrong',
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
+
     }
     @Post("/register")
     @UseGuards(SessionGuard)
     @UsePipes(new ValidationPipe())
     addAmbulance(@Body() data:AmbulanceDTO): any{
-        return this.ambulanceService.addAmbulance(data);;
+        try{
+            return this.ambulanceService.addAmbulance(data);
+        }
+        catch(err){
+            throw new HttpException({
+                status: HttpStatus.FORBIDDEN,
+                error: 'something went wrong',
+              }, HttpStatus.FORBIDDEN, {
+                cause: err
+              });
+        }
     }
 
 

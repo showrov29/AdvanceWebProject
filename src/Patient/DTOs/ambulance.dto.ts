@@ -1,4 +1,6 @@
+import { PatientEntity } from './../Entities/patient.entity';
 import { IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, length, Length, Matches } from "class-validator";
+import { OneToMany } from "typeorm";
 
 export class AmbulanceDTO{
 
@@ -20,7 +22,7 @@ export class AmbulanceDTO{
     @IsNotEmpty()
     @IsString()
     @Length(11,11)
-    @Matches('(^([+]{1}[8]{2}|0088)?(01){1}[3-9]{1}\d{8})$')
+    // @Matches('^01[3-9]\d{9}$','',{message:'Enter a valid phone'})
     phone:string
 
 
@@ -39,8 +41,8 @@ export class AmbulanceDTO{
     @Matches('^[#.0-9a-zA-Z\s,-]+$')
     location:string
 
-
-
+    patientA:any
+   
 
 
 
