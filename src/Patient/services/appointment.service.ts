@@ -53,8 +53,8 @@ import { MailerService } from "@nestjs-modules/mailer/dist";
                to: emailData.email,
                subject:'Appointment Scheduled',
               //  text:"abcd"
-              template:'/email'
-              // text: 'Dear '+emailData.userName+ ' Your Appointment Scheduled at ' + emailData.time +" Patient Name : "+emailData.name+ " Docator Name: " + emailData.doctorName+'Hospital Name: ' + emailData.hospitalName, 
+              // template:'/email'
+               text: 'Dear '+emailData.userName+ ' Your Appointment Scheduled at ' + emailData.time +" Patient Name : "+emailData.name+ " Docator Name: " + emailData.doctorName+'Hospital Name: ' + emailData.hospitalName, 
               });
             }
        
