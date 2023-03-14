@@ -34,4 +34,7 @@ export class AdminEntity{
 
     @OneToMany(() => HospitalEntity, (hospital) => hospital.admin)
     hospitals: HospitalEntity[];
+
+    @OneToMany(() => HospitalEntity, (doctor) => doctor.admin)
+    doctors: HospitalEntity[];
 }

@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { BloodBankDto, updateBloodBankDto } from "../dto/bloodBank.dto";
 import { BloodBankService } from "../services/bloodBank.service";
+import { AdminGuard } from "../session.guard";
 
 @Controller('bloodBank')
 export class BloodBankController {
@@ -21,12 +22,13 @@ export class BloodBankController {
    }
 
   @Post('/insertBloodBank')
+  @UseGuards(AdminGuard)
   insertBloodBank(@Body(new ValidationPipe()) mydto: BloodBankDto): any{
     return this.bloodBankService.insertBloodBank(mydto);
   }
 
   @Put('/updateBloodBank/:id')
-  //@UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe())
   updateBloodBankById(
     @Body(new ValidationPipe()) mydto: BloodBankDto,
     @Param('id', ParseIntPipe) id: number,
@@ -34,12 +36,13 @@ export class BloodBankController {
     return this.bloodBankService.updateBloodBankById(mydto, id);
   }
    @Patch('/updateBloodBankPat/:id')
-  // @UsePipes(new ValidationPipe())
+   @UsePipes(new ValidationPipe())
   updateBloodBankPat(@Param('id') id: string, @Body(new ValidationPipe()) bloodBankDto: updateBloodBankDto) {
     return this.bloodBankService.updateBloodBankPat(bloodBankDto, id);
    }
 
   @Delete('/rmvBloodBank/:id')
+  @UsePipes(new ValidationPipe())
   removeBloodBankById(@Param('id', ParseIntPipe) id: string):any {
     return this.bloodBankService.removeBloodBankById(+id);
   }

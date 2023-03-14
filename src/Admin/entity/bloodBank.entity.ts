@@ -6,12 +6,15 @@ export class BloodBankEntity{
     id: number;
 
     @Column()
-    bloodGroup : string;
+    availableBloodDonar : string;
 
     @Column()
     quantity: string;
 
     @Column()
-    dateOfCollection: string;
+    dateOfRecentCollection: string;
+
+    @Column()
+    expiredBloodBags: string;
 
 }

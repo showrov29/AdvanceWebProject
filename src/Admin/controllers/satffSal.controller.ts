@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Query, UsePipes, ValidationPipe } from "@nestjs/common";
 import { StaffSalDto, UpdateStaffSalDto } from "../dto/StaffSal.dto";
 import { StaffSalService } from "../services/StaffSal.service";
 
@@ -21,11 +21,13 @@ export class StaffSalController {
    }
 
   @Post('/insertStaffSal')
+  @UsePipes(new ValidationPipe())
   insertStaffSal(@Body(new ValidationPipe()) mydto: StaffSalDto): any{
     return this.staffSalService.insertStaffSal(mydto);
   }
 
   @Put('/updateStaffSal/:id')
+  @UsePipes(new ValidationPipe())
   //@UsePipes(new ValidationPipe())
   updateStaffSalById(
     @Body(new ValidationPipe()) mydto: StaffSalDto,
@@ -34,12 +36,14 @@ export class StaffSalController {
     return this.staffSalService.updateStaffSalById(mydto, id);
   }
    @Patch('/updateStaffSalPat/:id')
+   @UsePipes(new ValidationPipe())
   // @UsePipes(new ValidationPipe())
   updateStaffPat(@Param('id') id: string, @Body(new ValidationPipe()) StaffSalDto: UpdateStaffSalDto) {
     return this.staffSalService.updateStaffPat(StaffSalDto, id);
    }
 
   @Delete('/rmvStaffSal/:id')
+  @UsePipes(new ValidationPipe())
   removeStaffSalById(@Param('id', ParseIntPipe) id: string):any {
     return this.staffSalService.removeStaffSalById(+id);
   }

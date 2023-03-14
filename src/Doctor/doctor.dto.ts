@@ -42,5 +42,8 @@ export class DoctorForm {
 
     @IsNotEmpty({ message: 'bmdc_reg_no is required' })
     bmdc_reg_no: string;
+
+    @IsNotEmpty({message: "Please enter your Id*"})
+    admin:any;
     
 }

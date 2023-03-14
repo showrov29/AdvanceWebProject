@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { AdminEntity } from 'src/Admin/entity/admin.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 import { MedicineEntity } from "./medicine.entity";
 
 
@@ -47,6 +48,9 @@ export class DoctorEntity{
 
   @OneToMany(() => MedicineEntity, (medicine) => medicine.doctor)
   medicines: MedicineEntity[]
+
+  @ManyToOne(() => AdminEntity, (admin) => admin.doctors)
+  admin: AdminEntity
 
 
 

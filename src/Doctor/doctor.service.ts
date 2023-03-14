@@ -44,6 +44,7 @@ export class DoctorService {
       doctoraccount.bmdc_reg_no = mydto.bmdc_reg_no;
       doctoraccount.address = mydto.address;
       doctoraccount.profilePic = mydto.profilePic;
+      doctoraccount.admin = mydto.admin;
 
 
      return this.doctorRepo.save(doctoraccount);

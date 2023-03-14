@@ -23,9 +23,10 @@ export class BloodBankService {
    }
    insertBloodBank(mydto: BloodBankDto): any{
     const adminaccount = new BloodBankEntity()
-    adminaccount.bloodGroup = mydto.bloodGroup;
+    adminaccount.availableBloodDonar = mydto.availableBloodDonar;
     adminaccount.quantity = mydto.quantity;
-    adminaccount.dateOfCollection = mydto.dateOfCollection;
+    adminaccount.dateOfRecentCollection = mydto.dateOfRecentCollection;
+    adminaccount.expiredBloodBags = mydto.expiredBloodBags;
     //adminaccount.status = mydto.status;
     return this.bloodBankRepo.save(adminaccount);
     }

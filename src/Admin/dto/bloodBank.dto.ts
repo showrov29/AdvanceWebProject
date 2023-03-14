@@ -4,13 +4,16 @@ export class BloodBankDto{
 
     @IsNotEmpty({message:"Please enter your name *"})
     @IsString({message: "Invalid. Address should be a string *"})
-    bloodGroup: string;
+    availableBloodDonar: string;
     @IsNotEmpty({message:"Please enter the quantity of blood banks *"})
     quantity: string;
     @IsNotEmpty({message: "enter date *"})
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/,
          {message: "Invalid date format.. mm/dd/yyyy"})
-    dateOfCollection:string;
+    dateOfRecentCollection:string;
+    @IsNotEmpty({message: "enter expired blood bags*"})
+    expiredBloodBags: string;
+    
 }
 export class updateBloodBankDto{
 
@@ -19,7 +22,7 @@ export class updateBloodBankDto{
     @IsOptional()
     @IsNotEmpty({message:"Please enter your name *"})
     @IsString({message: "Invalid. Address should be a string *"})
-    bloodGroup: string;
+    availableBloodDonar: string;
 
     @IsOptional()
     @IsNotEmpty({message:"Please enter the helpline Number *"})
@@ -30,5 +33,7 @@ export class updateBloodBankDto{
     @IsNotEmpty({message: "Please enter your email address*"})
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/,
          {message: "Invalid date format.. mm/dd/yyyy"})
-    dateOfCollection:string;
+    dateOfRecentCollection:string;
+    @IsNotEmpty({message: "enter expired blood bags*"})
+    expiredBloodBags: string;
 }

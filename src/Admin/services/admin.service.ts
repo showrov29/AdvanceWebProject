@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { CreateAdminDto, UpdateAdminDto } from "../dto/admin.dto";
 import { AdminEntity } from "../entity/admin.entity";
 import * as bcrypt from 'bcrypt';
+//import { MailerService } from "@nestjs-modules/mailer";
 import { MailerService } from "@nestjs-modules/mailer";
 @Injectable()
 export class AdminService {
@@ -18,6 +19,11 @@ export class AdminService {
     }
     getAdminById(id):any {
         return this.adminRepo.findOneBy({ id });
+    }
+
+    changePass(password,email):any {
+   
+        return this.adminRepo.update({email:email},{password:password});
     }
 
     getAdminByIdName(qry):any {
@@ -87,6 +93,15 @@ export class AdminService {
         }
 
     getHospitalsByAdminId(id):any {
+        return this.adminRepo.find({ 
+                where: {id:id},
+            relations: {
+                hospitals: true,
+            },
+         });
+    }
+
+    getDoctorsByAdminId(id):any {
         return this.adminRepo.find({ 
                 where: {id:id},
             relations: {

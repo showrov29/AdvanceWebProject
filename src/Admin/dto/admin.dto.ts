@@ -7,7 +7,7 @@ export class CreateAdminDto {
     @IsNotEmpty({message:"Please enter your name *"})
     @IsString({message: "Invalid name. Name should be a string *"})
     @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/,
-     {message: "Username must be minimum 5 characters, at least one letter and one number"})
+     {message: "Username must be minimum 4 characters, at least one letter and one number"})
     name: string;
 
     @IsOptional()
@@ -17,10 +17,12 @@ export class CreateAdminDto {
 
     @IsNotEmpty({message: "Please enter your password*"}) 
     @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/,
-     {message: "Password minimum eight characters, at least one letter, one number and one special character"})
+     {message: "Password minimum 6 characters, at least one letter, one number and one special character"})
     password: string;
 
     @IsNotEmpty({message: "your gender*"})
+    @Matches(/^(?:male|female|other)$/ig, {
+        message: " Invalid. Male / Female / other?"})
     gender:string;
 
     @IsOptional()
