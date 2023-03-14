@@ -3,9 +3,10 @@ import { PatientController } from './Patient/controllers/patient.controller';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AdminModule } from './Admin/admin.module';
+
 import { DoctorModule } from './doctor/doctor.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminModule } from './Admin/module/admin.module';
 // import { PatientService } from './Patient/services/patient.service';
 
 @Module({
