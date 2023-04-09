@@ -42,6 +42,8 @@ export class AppointmentController{
     @UseGuards(SessionGuard)
     @UsePipes(new ValidationPipe())
     makeAppointment(@Body() appointmentData:AppointmentDTO,@Session() mysession ):any {
+
+            
             return this.appointmentService.addAppointment(appointmentData,mysession);
     }
 

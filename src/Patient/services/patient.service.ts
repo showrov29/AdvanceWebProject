@@ -44,13 +44,16 @@ export class PatientService {
   getPatientById( id): any {
     return this.patinetReppo.findOneBy({id:id});
   }
-  editPatient( id,data): any {
-     this.patinetReppo.update(id,data);
-     
-    return  (this.patinetReppo.update(id,data)); 
+ async editPatient( id,data) {
+    const salt = await bcrypt.genSalt()
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    data.password = hashedPassword
+    
+    return  (this.patinetReppo.update(id,{password:data.password})); 
   }
   uploadProfilePic( id,data): any {
      this.patinetReppo.update(id,data);
+     
      
     return  (this.patinetReppo.update(id,{profilePic:data.profilePic})); 
   }

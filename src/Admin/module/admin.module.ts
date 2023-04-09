@@ -19,18 +19,18 @@ import { StaffSalService } from "../services/StaffSal.service";
 @Module(
     {
         imports: [
-            MailerModule.forRoot({
-                transport: {
-                  host: 'smtp.gmail.com',
-                           port: 465,
-                           ignoreTLS: true,
-                           secure: true,
-                           auth: {
-                               user: 'tamannasristy2@gmail.com',
-                               pass: 'xlzixgtlgxgmvszy'
-                           },
-                          }
-              }),
+            // MailerModule.forRoot({
+            //     transport: {
+            //       host: 'smtp.gmail.com',
+            //                port: 465,
+            //                ignoreTLS: true,
+            //                secure: true,
+            //                auth: {
+            //                    user: 'tamannasristy2@gmail.com',
+            //                    pass: 'xlzixgtlgxgmvszy'
+            //                },
+            //               }
+            //   }),
             TypeOrmModule.forFeature([AdminEntity, HospitalEntity, DocSalEntity, BloodBankEntity, StaffSalEntity])],
         controllers: [AdminController, HospitalController, DocSalController, BloodBankController, StaffSalController],
         providers: [AdminService, HospitalService, DocSalService, BloodBankService, StaffSalService],

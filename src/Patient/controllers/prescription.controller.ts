@@ -19,7 +19,9 @@ export class PrescriptionController{
     @Get("/myprescription")
     @UseGuards(SessionGuard)
     getPrescriptionById(@Session() mysession): any{
-        return this.prescriptionService.getPrescriptionByPatientId(mysession.userId);
+        console.log(mysession.userId);
+        const id=mysession.userId;
+        return this.prescriptionService.getPrescriptionByPatientId(id);
     }
    
     @Get()

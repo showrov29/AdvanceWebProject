@@ -42,9 +42,11 @@ import { MailerService } from "@nestjs-modules/mailer/dist";
             time:appointment.date,
             name:appointment.name,
         }
+
+        
         this.sendEmail(emailData);
 
-        // return this.appointmentRepo.save(appointment);
+        return this.appointmentRepo.save(appointment);
       }
 
 

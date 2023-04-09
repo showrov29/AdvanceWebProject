@@ -13,11 +13,11 @@ export class AdminController {
   constructor(private readonly adminService: AdminService,
     private hospitalService: HospitalService) {}
 
-  @Get('all')
+  @Get('/all')
   getAdmin() {
     return this.adminService.getAdmin();
   }
-  @Get('getAdmin/:id')
+  @Get('/getAdmin/:id')
   getAdminById(@Param('id', ParseIntPipe) id: string) {
     return this.adminService.getAdminById(+id);
   }

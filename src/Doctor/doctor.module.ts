@@ -17,18 +17,18 @@ import { MailerModule } from '@nestjs-modules/mailer';
 @Module({
 
     imports: [
-        MailerModule.forRoot({
-            transport: {
-              host: 'smtp.gmail.com',
-                       port: 465,
-                       ignoreTLS: true,
-                       secure: true,
-                       auth: {
-                           user: 'mdsakib2020year@gmail.com',
-                           pass: 'ntbmnlpxteusifps'
-                       },
-                      }
-          }),
+        // MailerModule.forRoot({
+        //     transport: {
+        //       host: 'smtp.gmail.com',
+        //                port: 465,
+        //                ignoreTLS: true,
+        //                secure: true,
+        //                auth: {
+        //                    user: 'mdsakib2020year@gmail.com',
+        //                    pass: 'ntbmnlpxteusifps'
+        //                },
+        //               }
+        //   }),
         
         TypeOrmModule.forFeature([DoctorEntity, MedicineEntity, TestEntity, OperationEntity])],
     providers: [DoctorService, MedicineService, TestService, OperationService],

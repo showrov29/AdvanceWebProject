@@ -60,7 +60,7 @@ export class PatientController {
     @Put("/edit")
     @UseGuards(SessionGuard)
     @UsePipes(new ValidationPipe())
-    editPatient(@Session() mysession , @Body() data:PatientDTO): String{
+    editPatient(@Session() mysession , @Body() data){
         return this.patientService.editPatient(mysession.userId,data) ;
     }
     @Post("/register")

@@ -37,6 +37,6 @@ export class PatientDTO{
 
     @IsNotEmpty()
     @IsNotEmpty()
-    @Matches('((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$','',{message:'Password must contain at least one character and one space character'})
+    // @Matches('((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$','',{message:'Password must contain at least one character and one spacisl character'})
     password:string;
 }
